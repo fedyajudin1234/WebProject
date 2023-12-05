@@ -1,0 +1,78 @@
+﻿@model ProjectViewModel
+<div class="row">
+    <h2>Добавление проекта</h2>
+    <form asp-controller="Project" asp-action="AddProject" method="post" class="form-horizontal">
+        <label asp-for="Project_Name">Имя проекта</label>
+        <div class="code-block">
+            <input asp-for="Project_Name" class="form-control"/>
+            <span asp-validation-for="Project_Name" class="text-danger"></span>
+        </div>
+        <label asp-for="Company_Customer">Компания заказчик</label>
+        <div class="code-block">
+            <input type="text" asp-for="Company_Customer" class="form-control"/>
+            <span asp-validation-for="Company_Customer" class="text-danger"></span>
+        </div>
+        <label asp-for="Company_Producer">Компания исполнитель</label>
+        <div class="code-block">
+            <input type="text" asp-for="Company_Producer" class="form-control"/>
+            <span asp-validation-for="Company_Producer" class="text-danger"></span>
+        </div>
+        <label asp-for="Start_Date">Дата начала</label>
+        <div class="code-block">
+            <input type="datetime" asp-for="Start_Date" class="form-control"/>
+            <span asp-validation-for="Start_Date" class="text-danger"></span>
+        </div>
+        <label asp-for="Finish_Date">Дата окончания</label>
+        <div class="code-block">
+            <input type="datetime" asp-for="Finish_Date" class="form-control"/>
+            <span asp-validation-for="Finish_Date" class="text-danger"></span>
+        </div>
+        <label asp-for="Priority">Приоретет(от 1 до 3)</label>
+        <div class="code-block">
+            <input asp-for="Priority" class="form-control"/>
+            <span asp-validation-for="Priority" class="text-danger"></span>
+        </div>
+        <label asp-for="ManagerList">Руководитель проекта</label>
+        <div class="code-block">
+            <select asp-for="Selected_Manager" asp-items="Model.EmployeeSelectedList" class="form-control">
+            </select>
+                @*@foreach(var employee in Model.Employees)
+                {
+                    <select asp-for="Employees" class="form-control">
+                        <option>@employee.Name @employee.Surname @employee.Patronymic</option>
+                        <span asp-validation-for="Employees" class="text-danger"></span>
+                    </select>
+                }*@
+        </div>
+        <label asp-for="Employees">Сотрудники</label>
+        <div class="code-block">
+            <select asp-for="Selected_Employee" asp-items="Model.EmployeeSelectedList" class="form-control">
+            </select>
+            <input class="btn btn-success" type="submit" value="Добавить работника" asp-controller="Project" asp-action="AddEmployeeToList"/>
+            @*<table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Имя сотрудника</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach(var employee in Model.Employees)
+                        {
+                            <tr>
+                                <input type="hidden" asp-for="@employee.Id"/>
+                                <td>
+                                    <span>@employee.Name @employee.Surname @employee.Patronymic </span>
+                                </td>
+                                <td>
+                                    <input class="btn btn-success" type="submit" value="Добавить работника" asp-controller="Project" asp-action="AddEmployeeToList"/>
+                                </td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+            <td>*@
+        </div>
+        <input class="btn btn-success" type="submit" value="Добавить" asp-controller="Project" asp-action="AddProject"/>
+    </form>
+</div>

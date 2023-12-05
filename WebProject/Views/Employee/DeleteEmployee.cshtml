@@ -1,0 +1,7 @@
+﻿@model Employee
+<div class="row">
+    <h2>Запись удалена</h2>
+    <form asp-controller="Employee" asp-action="DeleteEmployee" method="post" class="form-horizontal">
+        <input class="btn btn-success" type="submit" value="Вернуться" asp-controller="Employee" asp-action="DeleteEmployee"/>
+    </form>
+</div>

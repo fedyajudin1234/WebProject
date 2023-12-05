@@ -1,0 +1,169 @@
+﻿@using WebProject.Data
+@model Project
+<div class="row">
+    <h2>Изменить проект</h2>
+    <form asp-controller="Project" asp-action="AddProject" method="post" class="form-horizontal">
+        <label asp-for="Project_Name">Имя проекта</label>
+        <div class="code-block">
+            <input asp-for="Project_Name" class="form-control"/>
+            <span asp-validation-for="Project_Name" class="text-danger"></span>
+        </div>
+        <label asp-for="Company_Customer">Компания заказчик</label>
+        <div class="code-block">
+            <input type="text" asp-for="Company_Customer" class="form-control"/>
+            <span asp-validation-for="Company_Customer" class="text-danger"></span>
+        </div>
+        <label asp-for="Company_Producer">Компания исполнитель</label>
+        <div class="code-block">
+            <input type="text" asp-for="Company_Producer" class="form-control"/>
+            <span asp-validation-for="Company_Producer" class="text-danger"></span>
+        </div>
+        <label asp-for="Start_Date">Дата начала</label>
+        <div class="code-block">
+            <input type="datetime" asp-for="Start_Date" class="form-control"/>
+            <span asp-validation-for="Start_Date" class="text-danger"></span>
+        </div>
+        <label asp-for="Finish_Date">Дата окончания</label>
+        <div class="code-block">
+            <input type="datetime" asp-for="Finish_Date" class="form-control"/>
+            <span asp-validation-for="Finish_Date" class="text-danger"></span>
+        </div>
+        <label asp-for="Priority">Приоретет(от 1 до 3)</label>
+        <div class="code-block">
+            <input asp-for="Priority" class="form-control"/>
+            <span asp-validation-for="Priority" class="text-danger"></span>
+        </div>
+        <label asp-for="ManagerId">Руководитель проекта</label>
+        <div>
+            <h3>Текущий руководитель</h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Имя руководителя</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.Id != 0)
+                    {
+                        List<Employee> employees = Model.Employees.Where(e => e.Id == Model.ManagerId).ToList();
+                        foreach(var employee in employees)
+                        {
+                            if(employee != null)
+                            {
+                                <tr>
+                    <td>
+                        <span>@employee.Name @employee.Surname @employee.Patronymic</span>
+                    </td>
+                    <td>
+                        <input class="btn btn-success" type="submit" value="Удалить руководителя" asp-controller="Project" asp-action="DeleteManager" asp-route-ID="@Model.Id"/>
+                        @*<button class="btn btn-success" type="submit" value="Удалить руководителя" onclick="@DeleteManager(employee.Id)"/>*@
+                    </td>
+                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+            <h3>Доступные руководители</h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <th>
+                        Имя руководителя
+                    </th>
+                </thead>
+                <tbody>
+                    @foreach(var manager in Model.Employees.Where(e => e.Id != Model.ManagerId))
+                    {
+                        <tr>
+                            <td>
+                                <span>@manager.Name @manager.Surname @manager.Patronymic</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" type="submit" href="@Url.Action("AddManager","Project", new { ProjectId = Model.Id, EmployeeId = manager.Id})">Заменить руководителя</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="code-block">
+            <h3>Текущие работники</h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Имя сотрудника</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.Id != 0){
+                        List<Employee> employeesForAdding = new List<Employee>();
+                            @foreach(var item in Model.EmployeeProjects.Where(ep => ep.Project == Model).Select(e => e.Employee))
+            {
+                        if(item != null)
+                        {
+                            <tr>
+                    <td>
+                        <span>@item.Name @item.Surname @item.Patronymic</span>
+                    </td>
+                    <td>
+                        @*<input class="btn btn-success" type="submit" value="Удалить сотрудника" asp-controller="Project" asp-action="DeleteEmployee" asp-route-ID="@Model.Id" asp-route-ID="@item.Id"/>*@
+                        <a class="btn btn-success" type="submit" href="@Url.Action("DeleteEmployee","Project", new { ProjectId = Model.Id, EmployeeId = item.Id})">Удалить сотрудника</a>
+                    </td>
+                </tr>
+                        }
+            }
+                    }
+                </tbody>
+            </table>
+            <h3>Доступные работники</h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    @*<tr>
+                        <th>
+                            Имя сотрудника
+                        </th>
+                    </tr>*@
+                </thead>
+                <tbody>
+                    @if(Model.Id != 0)
+                    {
+                        List<Employee> employeeThrowList = Model.EmployeeProjects.Where(ep => ep.ProjectId == Model.Id).Select(ep => ep.Employee).ToList();
+                        List<Employee> avaliableEmployee = new List<Employee>();
+                        @foreach(var employee in Model.Employees)
+                        {
+                            avaliableEmployee.Add(employee);
+                        }
+                        for(int i = 0; i < employeeThrowList.Count; i++)
+                        {
+                            if(avaliableEmployee.Contains(employeeThrowList[i]))
+                            {
+                                avaliableEmployee.Remove(employeeThrowList[i]);
+                            }
+                        }
+                        foreach(var employee in avaliableEmployee)
+                        {
+                            <tr>
+                                    <tb>
+                                        <span>@employee.Name @employee.Surname @employee.Patronymic</span>
+                                    </tb>
+                                    <tb>
+                                        @*<input class="btn btn-success" type="submit" value="Добавить сотрудника" asp-controller="Project" asp-action="AddEmployee" asp-route-ID="@Model.Id" asp-route-ID="@employee.Id"/>*@
+                                        <a class="btn btn-success" type="submit" href="@Url.Action("AddEmployee","Project", new { ProjectId = Model.Id, EmployeeId = employee.Id})">Добавить работника</a>
+                                    </tb>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <input class="btn btn-success" type="submit" value="Обновить" asp-controller="Project" asp-action="EditProject" asp-route-ID="@Model.Id"/>
+    </form>
+</div>
+@*@{
+    Employee DeleteManager(int id)
+    {
+        Employee employee = new Employee();
+        Model.ManagerId = 0;
+        return employee;
+    }
+}*@

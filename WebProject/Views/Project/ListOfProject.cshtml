@@ -1,0 +1,99 @@
+﻿@model ProjectViewModel
+<div class="row mt-5 mb-2">
+    @{
+        try
+        {
+             <h1>Все сотрудники</h1>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Название
+                                                                    </th>
+                                                                    <th>
+                                                                        Компания заказчик
+                                                                    </th>
+                                                                    <th>
+                                                                        Компания заказчик
+                                                                    </th>
+                                                                    <th>
+                                                                        Начало
+                                                                    </th>
+                                                                    <th>
+                                                                        Конец
+                                                                    </th>
+                                                                    <th>
+                                                                        Приоретет
+                                                                    </th>
+                                                                    <th>
+                                                                        Руководитель
+                                                                    </th>
+                                                                    <th>
+                                                                        Работники
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach(var project in Model.ProjectList)
+                    {
+                                                                    <tr>
+                                                                        <td style="display:none" class="Id">
+                                                                            <span>@project.Id</span>
+                                                                        </td>
+                                                                        <td class="Name">
+                                                                            <span>@project.Project_Name</span>
+                                                                        </td>
+                                                                        <td class="Surname">
+                                                                            <span>@project.Company_Customer</span>
+                                                                        </td>
+                                                                        <td class="Surname">
+                                                                            <span>@project.Company_Producer</span>
+                                                                        </td>
+                                                                        <td class="Patronymic">
+                                                                            <span>@project.Start_Date</span>
+                                                                        </td>
+                                                                        <td class="Email">
+                                                                            <span>@project.Finish_Date</span>
+                                                                        </td>
+                                                                        <td class="Projects">
+                                                                            <span>@project.Priority</span>
+                                                                        </td>
+                                                                        <td class="Manager_Name">
+                                @foreach(var id in Model.ProjectList.Where(proj => proj.Id == project.Id).Select(p => p.ManagerId).ToList())
+                                {
+                                    List<Employee> list = Model.Employees.Where(emp => emp.Id == id).ToList();
+                                    foreach(var employee in list)
+                                    {
+                                        <span>@employee.Name @employee.Surname @employee.Patronymic</span><br />
+                                    }
+                                }
+                            </td>
+                                                                        <td class="Employee_Name">
+                                @foreach(var item in Model.EmployeeProjects.Where(ep_id => ep_id.Project == project).Select(ep => ep.Employee))
+                                {
+                                    if(item != null)
+                                    {
+                                        <span>@item.Name @item.Surname @item.Patronymic</span><br />
+                                    }
+                                }
+                                                                        </td>
+                                                                        <td>
+                                                                            <td>
+                                                                                <a asp-controller="Project" asp-action="EditProject" asp-route-ID="@project.Id"
+                                                                                class="btn btn-primary m-1">
+                                                                                Edit
+                                                                                </a>
+                                                                                <a asp-controller="Project" asp-action="DeleteProject" asp-route-ID="@project.Id"
+                                                                                class="btn btn-secondary m-1">Delete</a>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                    }
+                                                            </tbody>
+                                                        </table>
+        }catch(NullReferenceException nRE)
+        {
+            
+        }
+    }
+</div>

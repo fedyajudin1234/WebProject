@@ -1,0 +1,68 @@
+﻿@model EmployeeViewModel
+<div class="row mt-5 mb-2">
+    @{
+        try
+        {
+                                                        <h1>Все сотрудники</h1>
+                                                        <table class="table" id="Employee">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Имя
+                                                                    </th>
+                                                                    <th>
+                                                                        Фамилия
+                                                                    </th>
+                                                                    <th>
+                                                                        Отчество
+                                                                    </th>
+                                                                    <th>
+                                                                        Почта
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach(var employee in Model.EmployeeList)
+                    {
+                                                                    <tr>
+                                                                        <td style="display:none" class="Id">
+                                                                            <span>@employee.Id</span>
+                                                                        </td>
+                                                                        <td class="Name">
+                                                                            <span>@employee.Name</span>
+                                                                        </td>
+                                                                        <td class="Surname">
+                                                                            <span>@employee.Surname</span>
+                                                                        </td>
+                                                                        <td class="Patronymic">
+                                                                            <span>@employee.Patronymic</span>
+                                                                        </td>
+                                                                        <td class="Email">
+                                                                            <span>@employee.Email</span>
+                                                                        </td>
+                                                                        <td class="Projects">
+                                                                            <span>@employee.EmployeeProjects</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <td>
+                                                                                <a asp-controller="Employee" asp-action="EditEmployee" asp-route-ID="@employee.Id"
+                                                                                class="btn btn-primary m-1">
+                                                                                Edit
+                                                                                </a>
+                                                                                <a asp-controller="Employee" asp-action="DeleteEmployee" asp-route-ID="@employee.Id"
+                                                                                class="btn btn-secondary m-1">Delete</a>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                    }
+                                                            </tbody>
+                                                        </table>
+            }catch(NullReferenceException nRE)
+            {
+                                                        <div>
+                                                            <h2>Ой! Страница пустая</h2>
+                                                            <h3>Не хотите ли вы добавить проект?</h3>
+                                                        </div>
+            }
+        }
+    </div>

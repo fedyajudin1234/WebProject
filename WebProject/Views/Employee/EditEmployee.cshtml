@@ -1,0 +1,27 @@
+﻿@model Employee
+<div class="row">
+    <h2>Изменение работника</h2>
+    <form asp-controller="Employee" asp-action="EditEmployee" method="post" class="form-horizontal">
+        <label asp-for="Name">Имя работника</label>
+        <div class="code-block">
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <label asp-for="Surname">Фамилия работника</label>
+        <div class="code-block">
+            <input asp-for="Surname" class="form-control"/>
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <label asp-for="Patronymic">Отчество работника</label>
+        <div class="code-block">
+            <input asp-for="Patronymic" class="form-control"/>
+            <span asp-validation-for="Patronymic" class="text-danger"></span>
+        </div>
+        <label asp-for="Email">E-mail адрес</label>
+        <div class="code-block">
+            <input asp-for="Email" class="form-control"/>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <input class="btn btn-success" type="submit" value="Обновить" asp-controller="Employee" asp-action="EditEmployee"/>
+    </form>
+</div>
